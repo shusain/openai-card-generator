@@ -1,10 +1,13 @@
 import Head from "next/head";
 import { useState } from "react";
 import styles from "./index.module.css";
+import Card from '../components/card'
 
 export default function Home() {
   const [animalInput, setAnimalInput] = useState("");
+  const [colorInput, setColorInput] = useState("");
   const [result, setResult] = useState();
+  const [imageUrl, setImageUrl] = useState();
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -14,7 +17,7 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ animal: animalInput }),
+        body: JSON.stringify({ animal: animalInput, color: colorInput }),
       });
 
       const data = await response.json();
@@ -23,7 +26,9 @@ export default function Home() {
       }
 
       setResult(data.result);
+      setImageUrl(data.imageUrl);
       setAnimalInput("");
+      setColorInput("");
     } catch(error) {
       // Consider implementing your own error handling logic here
       console.error(error);
@@ -34,24 +39,32 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>OpenAI Quickstart</title>
+        <title>Card Generator</title>
         <link rel="icon" href="/dog.png" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0" />
       </Head>
 
       <main className={styles.main}>
         <img src="/dog.png" className={styles.icon} />
-        <h3>Name my pet</h3>
+        <h3>Choose a card type</h3>
         <form onSubmit={onSubmit}>
           <input
             type="text"
             name="animal"
-            placeholder="Enter an animal"
+            placeholder="Enter a card type (Artifact, Creature, Instant, Sorcery etc.)"
             value={animalInput}
             onChange={(e) => setAnimalInput(e.target.value)}
           />
-          <input type="submit" value="Generate names" />
+          <input
+            type="text"
+            name="color"
+            placeholder="Color (optional)"
+            value={colorInput}
+            onChange={(e) => setColorInput(e.target.value)}
+          />
+          <input type="submit" value="Generate a Card" />
         </form>
-        <div className={styles.result}>{result}</div>
+        <Card result={result} imageUrl={imageUrl} />
       </main>
     </div>
   );

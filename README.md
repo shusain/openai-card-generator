@@ -2,6 +2,9 @@
 
 This is an example pet name generator app used in the OpenAI API [quickstart tutorial](https://beta.openai.com/docs/quickstart). It uses the [Next.js](https://nextjs.org/) framework with [React](https://reactjs.org/). Check out the tutorial or follow the instructions below to get set up.
 
+## Modifications
+The quickstart tutorial has been modified to use both the text-gen endpoint as well as the image gen endpoint to generate mock card info and then generate a card image based on the generated text.
+
 ## Setup
 
 1. If you don’t have Node.js installed, [install it from here](https://nodejs.org/en/) (Node.js version >= 14.6.0 required)

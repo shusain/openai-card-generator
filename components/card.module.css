@@ -1,0 +1,169 @@
+.card {
+  width: 300px;
+  height: 450px;
+  background: black;
+  border-radius: 15px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: black;
+  display: flex;
+  flex-direction: column;
+  font-family: serif;
+}
+.card .cardImage {
+  height: 70%;
+  width: 288px;
+  align-self: center;
+  border-color: blue;
+  border-style: ridge;
+  border-width: 2px;
+  border-radius: 3px;
+  background-position-y: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.card .cardHeader {
+  border-color: blue;
+  border-style: ridge;
+  border-width: 2px;
+  border-radius: 3px;
+  padding: 1px 3px;
+  background-color: rgb(35, 255, 255);
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.icon {
+  color: white;
+  font-size: 12pt;
+}
+
+/* White icon needs black text */
+.White .icon {
+  color: black;
+}
+.card .colorlessMana, .greenMana, .redMana, .blackMana, .blueMana, .whiteMana {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: lightgray;
+  border-radius: 20px;
+  width: 20px;
+  height: 20px;
+  box-shadow: -1px 1px 1px;
+}
+.card .redMana {
+  background-color: rgb(255, 84, 84);
+}
+.card .greenMana {
+  background-color: rgb(84, 255, 101);
+}
+.card .blueMana {
+  background-color: rgb(84, 209, 255);
+}
+.card .whiteMana {
+  background-color: rgb(255, 255, 255);
+}
+.card .blackMana {
+  background-color: rgb(44, 44, 44);
+}
+.card .mana, .coloredMana {
+  display: flex;
+  flex-direction: row;
+}
+.card .manaCost {
+
+}
+.card .nameTypeAndRarity {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  
+  background-color: rgb(35, 255, 255);
+  border-color: blue;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 5px;
+  padding: 0px 2px;
+  font-weight: bold;
+}
+.card .description {
+  box-sizing: border-box;
+  background-color: rgb(140, 255, 255);
+  height: 250px;
+  width: 288px;
+  padding: 20px 20px;
+  align-self: center;
+  border-style: ridge;
+  border-radius: 3px;
+  border-color: blue;
+}
+.card .strengthAndDefense {
+  align-self: flex-end;
+  position: relative;
+  bottom: 10px;
+  right: 5px;
+  border-style: ridge;
+  border-radius: 3px;
+  background-color: rgb(35, 255, 255);
+  padding: 0px 10px;
+  font-weight: bold;
+}
+
+/* Color specific overrides Green*/
+.card.Green .cardImage, 
+.card.Green .description,
+.card.Green .nameTypeAndRarity,
+.card.Green .cardHeader {
+  border-color: green;
+}
+.card.Green .strengthAndDefense,
+.card.Green .description,
+.card.Green .nameTypeAndRarity,
+.card.Green .cardHeader {
+  background-color: greenyellow;
+}
+
+/* Color specific overrides Red*/
+.card.Red .cardImage, 
+.card.Red .description,
+.card.Red .nameTypeAndRarity,
+.card.Red .cardHeader {
+  border-color: red;
+}
+.card.Red .strengthAndDefense,
+.card.Red .description,
+.card.Red .nameTypeAndRarity,
+.card.Red .cardHeader {
+  background-color: rgb(255, 157, 157);
+}
+
+/* Color specific overrides White*/
+.card.White .cardImage, 
+.card.White .description,
+.card.White .nameTypeAndRarity,
+.card.White .cardHeader {
+  border-color: rgb(220, 220, 220);
+}
+.card.White .strengthAndDefense,
+.card.White .description,
+.card.White .nameTypeAndRarity,
+.card.White .cardHeader {
+  background-color: rgb(255, 255, 255);
+}
+
+/* Color specific overrides Black*/
+.card.Black .cardImage, 
+.card.Black .description,
+.card.Black .nameTypeAndRarity,
+.card.Black .cardHeader {
+  border-color: rgb(47, 47, 47);
+}
+.card.Black .strengthAndDefense,
+.card.Black .description,
+.card.Black .nameTypeAndRarity,
+.card.Black .cardHeader {
+  background-color: rgb(142, 142, 142);
+}

@@ -24,14 +24,22 @@ export default async function (req, res) {
     });
     return;
   }
+  const chosenColor = req.body.color || '';
 
   try {
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
-      prompt: generatePrompt(animal),
-      temperature: 0.6,
+      prompt: generatePrompt(animal, chosenColor),
+      temperature: 0.9,
+      max_tokens: 1024
     });
-    res.status(200).json({ result: completion.data.choices[0].text });
+    let parsedResult = JSON.parse(completion.data.choices[0].text)
+    const imageInfo = await openai.createImage({
+      prompt:`Magic fantasy, realistic, intimidating: ${parsedResult.type} "${parsedResult.color} ${parsedResult.name}" ${parsedResult.description}, air brushed, ((${parsedResult.type} only))`,
+      n:1,
+      size:"512x512"
+    })
+    res.status(200).json({ result: parsedResult, imageUrl: imageInfo.data.data[0].url });
   } catch(error) {
     // Consider adjusting the error handling logic for your use case
     if (error.response) {
@@ -48,15 +56,35 @@ export default async function (req, res) {
   }
 }
 
-function generatePrompt(animal) {
-  const capitalizedAnimal =
-    animal[0].toUpperCase() + animal.slice(1).toLowerCase();
-  return `Suggest three names for an animal that is a superhero.
+function generatePrompt(cardType, chosenColor) {
+  return `Give details for a magic the gathering card in JSON for example:
 
-Animal: Cat
-Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
-Animal: Dog
-Names: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot
-Animal: ${capitalizedAnimal}
-Names:`;
+{
+  "type": "Creature",
+  "name": "Elevated Nymph",
+  "description": "As long as it's not your turn, spells you cast cost 1 less to cast.",
+  "strength": 2,
+  "defense": 3,
+  "color": "Green",
+  "rarity": "Mythic",
+  "subType" : "Nymph",
+  "abilities": [{"ability": "Toxic", "amount": 2}, {"ability": "Flying", amount: 1}],
+  "counters": [],
+  "mana_cost": { "colorless": 4, "blue": 0, "red": 0, "green": 3, "white": 0, "black": 0 }
+}
+
+Fill in the model properties and return parseable JSON only:
+{
+  "type": "${cardType}",
+  "name": ,
+  "description": ,
+  "strength": ,
+  "defense": ,
+  "color": ${chosenColor!=''?"\""+chosenColor+"\"":''},
+  "rarity": ,
+  "subType": ,
+  "abilities": ,
+  "counters": ,
+  "mana_cost": {},
+}`;
 }
