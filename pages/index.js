@@ -34,6 +34,29 @@ export default function Home() {
       alert(error.message);
     }
   }
+  
+  async function onRequestNewImage(event) {
+    event.preventDefault();
+    try {
+      const response = await fetch("/api/generate-image", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ cardInfo: result, color: colorInput }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+      setImageUrl(data.imageUrl);
+    } catch(error) {
+      // Consider implementing your own error handling logic here
+      console.error(error);
+      alert(error.message);
+    }
+  }
 
   return (
     <div>
@@ -62,6 +85,7 @@ export default function Home() {
             onChange={(e) => setColorInput(e.target.value)}
           />
           <input type="submit" value="Generate a Card" />
+          <input type="button" value="Request New Image" onClick={onRequestNewImage} />
         </form>
         <Card result={result} imageUrl={imageUrl} />
       </main>
