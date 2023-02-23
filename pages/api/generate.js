@@ -1,4 +1,5 @@
 import { Configuration, OpenAIApi } from "openai";
+import {StableDiffusionService} from './stable-diffusion-service'
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -34,12 +35,18 @@ export default async function (req, res) {
       max_tokens: 1024
     });
     let parsedResult = JSON.parse(completion.data.choices[0].text)
-    const imageInfo = await openai.createImage({
-      prompt:`Magic fantasy, realistic, intimidating: ${parsedResult.type} "${parsedResult.color} ${parsedResult.name}" ${parsedResult.description}, air brushed, ((${parsedResult.type} only))`,
-      n:1,
-      size:"512x512"
-    })
-    res.status(200).json({ result: parsedResult, imageUrl: imageInfo.data.data[0].url });
+    
+    let imagePrompt = `${parsedResult.type} "${parsedResult.color} ${parsedResult.name}" ${parsedResult.description},  (fantasy) (dark) (painting) (airbrush) (oil) (detail)`
+    
+    let sdw = new StableDiffusionService()
+    const imageInfo = await sdw.createImage({prompt: imagePrompt})
+    
+    // const imageInfo = await openai.createImage({
+    //   prompt:`Magic fantasy, realistic, intimidating: ${parsedResult.type} "${parsedResult.color} ${parsedResult.name}" ${parsedResult.description}, air brushed, ((${parsedResult.type} only))`,
+    //   n:1,
+    //   size:"512x512"
+    // })
+    res.status(200).json({ result: parsedResult, imageUrl: imageInfo });
   } catch(error) {
     // Consider adjusting the error handling logic for your use case
     if (error.response) {
