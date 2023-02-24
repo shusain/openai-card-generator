@@ -17,7 +17,11 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ animal: animalInput, color: colorInput }),
+        body: JSON.stringify({
+          animal: animalInput,
+          color: colorInput,
+          useStableDiffusion: true
+        }),
       });
 
       const data = await response.json();
@@ -43,7 +47,11 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ cardInfo: result, color: colorInput }),
+        body: JSON.stringify({
+          cardInfo: result,
+          color: colorInput,
+          useStableDiffusion: true
+        }),
       });
 
       const data = await response.json();
