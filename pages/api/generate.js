@@ -68,7 +68,7 @@ function generatePrompt(cardType, chosenColor) {
   "color": "Green",
   "rarity": "Mythic",
   "subType" : "Nymph",
-  "abilities": [{"ability": "Toxic", "amount": 2}, {"ability": "Flying", amount: 1}],
+  "abilities": [{"ability": "Toxic", "amount": 2}, {"ability": "Flying", "amount": 1}],
   "counters": [],
   "mana_cost": { "colorless": 4, "blue": 0, "red": 0, "green": 3, "white": 0, "black": 0 }
 }
