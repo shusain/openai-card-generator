@@ -2,13 +2,16 @@ import cardStyles from "./card.module.css";
 import React from 'react';
 export default class Card extends React.Component {
   render() {
+    let cardImageDataStyle = {
+      backgroundImage: `url(data:image/png;base64,${this.props.imageUrl})`
+    }
     return (
       <div className={cardStyles.card + " " + cardStyles[this.props.result?.color]}>
         <div className={cardStyles.cardHeader}>
           {this.props.result?.name}
           <ManaDisplay manaCost={this.props.result?.mana_cost} />
         </div>
-        <div className={cardStyles.cardImage} style={{backgroundImage: `url(${this.props.imageUrl})`}} ></div>
+        <div className={cardStyles.cardImage} style={cardImageDataStyle} ></div>
         <div className={cardStyles.nameTypeAndRarity}>
           {this.props.result?.type} - {this.props.result?.subType}
           <span className="material-symbols-outlined" style={{ color: { "Common": "black", "Uncommon": "#b1d8e6", "Rare": "#f4e500", "Mythic Rare": "#f8981c" }[this.props.result?.rarity], textDecoration: "outline" }}>swords</span>

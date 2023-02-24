@@ -7,6 +7,8 @@ This is an example pet name generator app used in the OpenAI API [quickstart tut
 
 The quickstart tutorial has been modified to use both the text-gen endpoint as well as the image gen endpoint to generate mock card info and then generate a card image based on the generated text.
 
+This branch assumes that stable diffusion has been started with the --api flag locally to generate images.
+
 ## Setup
 
 1. If you don’t have Node.js installed, [install it from here](https://nodejs.org/en/) (Node.js version >= 14.6.0 required)
