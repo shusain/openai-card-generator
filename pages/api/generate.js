@@ -1,20 +1,11 @@
-import { Configuration, OpenAIApi } from "openai";
-import {StableDiffusionService} from './stable-diffusion-service'
+import { StableDiffusionService } from './stable-diffusion-service'
+import OpenAI from "openai";
 
-const configuration = new Configuration({
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-const openai = new OpenAIApi(configuration);
 
 export default async function (req, res) {
-  if (!configuration.apiKey) {
-    res.status(500).json({
-      error: {
-        message: "OpenAI API key not configured, please follow instructions in README.md",
-      }
-    });
-    return;
-  }
 
   const animal = req.body.animal || '';
   if (animal.trim().length === 0) {
@@ -29,27 +20,29 @@ export default async function (req, res) {
   const useStableDiffusion = req.body.useStableDiffusion || false;
 
   try {
-    const completion = await openai.createCompletion({
-      model: "text-davinci-003",
-      prompt: generatePrompt(animal, chosenColor),
+    const completion = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo-1106",
+      messages: generatePrompt(animal, chosenColor),
+      response_format: { "type": "json_object" },
       temperature: 0.9,
       max_tokens: 1024
     });
-    let parsedResult = JSON.parse(completion.data.choices[0].text)
-    
+    console.log(completion.choices)
+    let parsedResult = JSON.parse(completion.choices[0].message.content)
+
     let imagePrompt = `${parsedResult.type} "${parsedResult.color} ${parsedResult.name}" ${parsedResult.description},  (fantasy) (dark) (painting) (airbrush) (oil) (detail)`
 
     let imageInfo;
-    
-    if(useStableDiffusion) {
+
+    if (useStableDiffusion) {
       let sdw = new StableDiffusionService()
-      imageInfo = await sdw.createImage({prompt: imagePrompt})
+      imageInfo = await sdw.createImage({ prompt: imagePrompt })
     }
     else {
       let openAIResponse = await openai.createImage({
-        prompt:`Magic fantasy, realistic, intimidating: ${parsedResult.type} "${parsedResult.color} ${parsedResult.name}" ${parsedResult.description}, air brushed, ((${parsedResult.type} only))`,
-        n:1,
-        size:"512x512",
+        prompt: `Magic fantasy, realistic, intimidating: ${parsedResult.type} "${parsedResult.color} ${parsedResult.name}" ${parsedResult.description}, air brushed, ((${parsedResult.type} only))`,
+        n: 1,
+        size: "512x512",
         response_format: 'b64_json'
       })
 
@@ -58,7 +51,7 @@ export default async function (req, res) {
 
 
     res.status(200).json({ result: parsedResult, imageUrl: imageInfo });
-  } catch(error) {
+  } catch (error) {
     // Consider adjusting the error handling logic for your use case
     if (error.response) {
       console.error(error.response.status, error.response.data);
@@ -75,7 +68,8 @@ export default async function (req, res) {
 }
 
 function generatePrompt(cardType, chosenColor) {
-  return `Give details for a magic the gathering card in JSON for example:
+  return [{
+    role: 'system', content: `Give details for a magic the gathering card in JSON for example:
 
 {
   "type": "Creature",
@@ -89,20 +83,21 @@ function generatePrompt(cardType, chosenColor) {
   "abilities": [{"ability": "Toxic", "amount": 2}, {"ability": "Flying", "amount": 1}],
   "counters": [],
   "mana_cost": { "colorless": 4, "blue": 0, "red": 0, "green": 3, "white": 0, "black": 0 }
-}
-
-Fill in the model properties and return parseable JSON only:
+}`
+  },
+  {
+    role: 'user', content: `Fill in the model properties and return parseable JSON only:
 {
   "type": "${cardType}",
   "name": ,
   "description": ,
   "strength": ,
   "defense": ,
-  "color": ${chosenColor!=''?"\""+chosenColor+"\"":''},
+  "color": ${chosenColor != '' ? "\"" + chosenColor + "\"" : ''},
   "rarity": ,
   "subType": ,
   "abilities": ,
   "counters": ,
   "mana_cost": {},
-}`;
+}`}];
 }

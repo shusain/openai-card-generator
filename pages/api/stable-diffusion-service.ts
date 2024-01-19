@@ -2,7 +2,7 @@ import axios from 'axios'
 export class StableDiffusionService {
   async createImage(options: { prompt: string }) {
     let response = await axios.post(
-      'http://127.0.0.1:7860/sdapi/v1/txt2img',
+      'http://192.168.0.100:7860/sdapi/v1/txt2img',
       // '{\n  "enable_hr": false,\n  "denoising_strength": 0,\n  "firstphase_width": 0,\n  "firstphase_height": 0,\n  "hr_scale": 2,\n  "hr_upscaler": "string",\n  "hr_second_pass_steps": 0,\n  "hr_resize_x": 0,\n  "hr_resize_y": 0,\n  "prompt": "Blue Creature Flying Fairy (fantasy) (air brush)",\n  "styles": [\n  ],\n  "seed": -1,\n  "subseed": -1,\n  "subseed_strength": 0,\n  "seed_resize_from_h": -1,\n  "seed_resize_from_w": -1,\n  "sampler_name": "Euler",\n  "batch_size": 1,\n  "n_iter": 1,\n  "steps": 50,\n  "cfg_scale": 7,\n  "width": 512,\n  "height": 512,\n  "restore_faces": false,\n  "tiling": false,\n  "negative_prompt": "",\n  "eta": 0,\n  "s_churn": 0,\n  "s_tmax": 0,\n  "s_tmin": 0,\n  "s_noise": 1,\n  "override_settings": {},\n  "override_settings_restore_afterwards": true,\n  "script_args": [],\n  "sampler_index": "Euler",\n  "script_name": null\n}',
       {
           'enable_hr': false,
@@ -30,7 +30,7 @@ export class StableDiffusionService {
           'height': 384,
           'restore_faces': false,
           'tiling': false,
-          'negative_prompt': '(magic the gathering), card, text, word, framed, photo, panel',
+          'negative_prompt': '(magic the gathering), card, text, word, framed, photo, panel, (nude), naked',
           'eta': 0,
           's_churn': 0,
           's_tmax': 0,
